@@ -16,12 +16,18 @@ public class Main {
         BufferedImage image = loadImage(args[0]);
         if (image == null) {
             return;
-        
-}
-        System.out.println("Image width: " + image.getWidth());
-        System.out.println("Image height: " + image.getHeight());
-    }
+        }
 
+        ImageAveraging.singleThreaded(image, size);
+
+        try {
+            ImageIO.write(image, "jpg", new File("result.jpg"));
+        } 
+        catch (IOException e) {
+            System.err.println("Could not save the image");
+        }
+    }
+    
 
 
 
@@ -59,7 +65,7 @@ public class Main {
         BufferedImage image = ImageIO.read(file);
 
         if (image == null) {
-            reportError("File not found");
+            reportError("The file is not a readable image: " + filename);
             return null;
         }
         return image;
