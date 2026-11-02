@@ -17,8 +17,11 @@ public class Main {
         if (image == null) {
             return;
         }
+        
+        Visualization view = Visualization.show(image);
 
-        ImageAveraging.singleThreaded(image, size);
+
+        ImageAveraging.singleThreaded(image, size, view);
 
         try {
             ImageIO.write(image, "jpg", new File("result.jpg"));
