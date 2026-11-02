@@ -12,4 +12,8 @@ public class ImageAveraging {
         }
     }
 
+    public static void singleThreaded(BufferedImage image, int size) {
+        averageRows(image, size, 0, image.getHeight());
+}
+
 }   
