@@ -1,59 +1,75 @@
-import java.awt.GraphicsEnvironment;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
+import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
-import javax.swing.JFrame;
 import javax.swing.JComponent;
+import javax.swing.JFrame;
 
-public class Visualization extends JComponent{
+public class Visualization extends JComponent {
+
     private final BufferedImage image;
+    private final double scale;
+    private final int displayWidth;
+    private final int displayHeight;
 
-    private Visualization(BufferedImage image){
+    private Visualization(BufferedImage image) {
+
         this.image = image;
+
+        Rectangle screen = GraphicsEnvironment
+                .getLocalGraphicsEnvironment()
+                .getMaximumWindowBounds();
+
+        double maxWidth = screen.width - 20;
+        double maxHeight = screen.height - 60;
+
+        this.scale = Math.min(1.0, Math.min(
+                maxWidth / image.getWidth(),
+                maxHeight / image.getHeight()
+        ));
+
+        this.displayWidth = (int) (image.getWidth() * scale);
+        this.displayHeight = (int) (image.getHeight() * scale);
+        setPreferredSize(new Dimension(displayWidth, displayHeight));
     }
+
     @Override
-    protected void paintComponent(Graphics g){
+        protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        g.drawImage(image, 0, 0, getWidth(), getHeight(), null);
+        int x = (getWidth() - displayWidth) / 2;
+        int y = (getHeight() - displayHeight) / 2;
+        g.drawImage(image, x, y, displayWidth, displayHeight, null);
     }
 
     public void repaintSquare(int squareX, int squareY, int size) {
-        double scaleX = (double) getWidth() / image.getWidth();
-        double scaleY = (double) getHeight() / image.getHeight();
+        int x = (int) (squareX * scale);
+        int y = (int) (squareY * scale);
 
-        repaint((int) (squareX * scaleX), (int) (squareY * scaleY),
-                (int) (size * scaleX) + 2, (int) (size * scaleY) + 2);
+        int side = (int) Math.ceil(size * scale) + 2;
+
+        repaint(x, y, side, side);
     }
 
+    
+
+
+   
+
     public static Visualization show(BufferedImage image) {
+
         Visualization view = new Visualization(image);
 
-        JFrame window = new JFrame("Square averaging");
+        JFrame window = new JFrame("Image Averaging");
+
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        window.setUndecorated(true);
+        window.setResizable(false);
         window.add(view);
 
-        window.addKeyListener(new KeyAdapter() {
-            @Override
-            public void keyPressed(KeyEvent e) {
-                if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
-                    System.exit(0);
-                }
-            }
-        });
+        window.pack();
+        window.setLocationRelativeTo(null);
+        window.setVisible(true);
 
-        GraphicsDevice device = GraphicsEnvironment
-                .getLocalGraphicsEnvironment()
-                .getDefaultScreenDevice();
-
-        device.setFullScreenWindow(window);
-        window.requestFocus();
         return view;
     }
 }
-
-
-
-
