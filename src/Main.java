@@ -49,6 +49,14 @@ public class Main {
         reportError("The program requires exactly 3 arguments.");
         return false;
     }
+    
+    private static boolean checkMode(String mode) {
+        if (mode.equalsIgnoreCase("S") || mode.equalsIgnoreCase("M")) {
+            return true;
+        }
+        reportError("mode must be S or M.");
+        return false;
+    }
 
     private static int squareSize(String value) {
         try {
