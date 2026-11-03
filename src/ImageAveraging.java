@@ -8,6 +8,13 @@ public class ImageAveraging {
             for (int x = 0; x < width; x += size) {
                 SquareAveraging.averageSquare(image, x, y, size);
                 view.repaintSquare(x, y, size);
+                try {
+                    Thread.sleep(100);
+                } 
+                catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                    return;
+                }
             }
         }
 }
