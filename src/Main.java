@@ -13,6 +13,10 @@ public class Main {
         if (size == -1) {
             return;
         }
+
+         if (checkMode(args[2]) == false) {
+            return;
+        }
         BufferedImage image = loadImage(args[0]);
         if (image == null) {
             return;
@@ -26,8 +30,13 @@ public class Main {
         catch (InterruptedException e) {
             return;
         }
-
-        ImageAveraging.singleThreaded(image, size, view);
+        
+        if (args[2].equalsIgnoreCase("S")) {
+            ImageAveraging.singleThreaded(image, size, view);
+        }
+        else if (args[2].equalsIgnoreCase("M")) {
+            ImageAveraging.multiThread(image, size, view);
+        }
 
         try {
             ImageIO.write(image, "jpg", new File("result.jpg"));
