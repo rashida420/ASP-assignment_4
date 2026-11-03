@@ -1,4 +1,3 @@
-
 import java.awt.GraphicsEnvironment;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -8,9 +7,7 @@ import java.awt.image.BufferedImage;
 import javax.swing.JFrame;
 import javax.swing.JComponent;
 
-
 public class Visualization extends JComponent{
-    private final int margin = 0;
     private final BufferedImage image;
 
     private Visualization(BufferedImage image){
@@ -19,35 +16,16 @@ public class Visualization extends JComponent{
     @Override
     protected void paintComponent(Graphics g){
         super.paintComponent(g);
-
-        int width = getWidth() - 2 * margin;
-        int height = getHeight();
-
-        double scale = Math.min(1.0, Math.min(
-            (double) width/ image.getWidth(),
-            (double) height / image.getHeight()
-        ));
-
-        int newWidth = (int) (image.getWidth()* scale);
-        int newHeight = (int) (image.getHeight() * scale);
-
-        int x = (getWidth() - newWidth) / 2;
-        int y = (getHeight() - newHeight) / 2;
-        g.drawImage(image, x, y, newWidth, newHeight, null);
-
+        g.drawImage(image, 0, 0, getWidth(), getHeight(), null);
     }
 
     public void repaintSquare(int squareX, int squareY, int size) {
-        double scale = Math.min(1.0, Math.min(
-            (double) (getWidth() - 2 *margin) / image.getWidth(),
-            (double) getHeight() / image.getHeight()
-        ));
-        int offsetX = (getWidth() - (int) (image.getWidth() * scale)) / 2;
-        int offsetY = (getHeight() - (int) (image.getHeight() * scale)) / 2;
+        double scaleX = (double) getWidth() / image.getWidth();
+        double scaleY = (double) getHeight() / image.getHeight();
 
-        repaint(offsetX + (int) (squareX * scale), offsetY + (int) (squareY * scale),(int) (size * scale) + 2,(int) (size * scale) + 2);
+        repaint((int) (squareX * scaleX), (int) (squareY * scaleY),
+                (int) (size * scaleX) + 2, (int) (size * scaleY) + 2);
     }
-
 
     public static Visualization show(BufferedImage image) {
         Visualization view = new Visualization(image);
@@ -75,3 +53,7 @@ public class Visualization extends JComponent{
         return view;
     }
 }
+
+
+
+
