@@ -96,12 +96,12 @@ Here I will include screenshots of the original image and the results produced b
 
 ### Original Image
 
-![Original Image](images/2.png)
+![alt text](images/2.jpg)
 
 ### Single-Threaded Result
 
-![Image Processing](images/image.png)
+![alt text](images/image.png)
 
 ### Multi-Threaded Result
 
-![Image Processing](images/image.png)
+![alt text](images/image-1.png)
