@@ -18,14 +18,21 @@ public class Main {
             return;
         }
         
-        Visualization view = Visualization.show(image);
+       Visualization view = Visualization.show(image);
 
+        try {
+            Thread.sleep(1000);
+        }
+        catch (InterruptedException e) {
+            return;
+        }
 
         ImageAveraging.singleThreaded(image, size, view);
 
         try {
             ImageIO.write(image, "jpg", new File("result.jpg"));
-        } 
+            System.out.println("Saved result.jpg");
+        }
         catch (IOException e) {
             System.err.println("Could not save the image");
         }
